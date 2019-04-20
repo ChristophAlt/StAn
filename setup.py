@@ -24,7 +24,7 @@ from io import open
 from setuptools import find_packages, setup
 
 setup(
-    name="pytorch_pretrained_bert",
+    name="stan",
     version="0.0.1a",
     author="Christoph Alt",
     author_email="christoph@opennlu.org",
