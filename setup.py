@@ -36,7 +36,6 @@ setup(
     url="https://github.com/ChristophAlt/StAn",
     packages=find_packages(exclude=["*.tests", "*.tests.*",
                                     "tests.*", "tests"]),
-    setup_requires=["pytest-runner"],
     install_requires=["stanfordcorenlp",
                       "tqdm",
                       "joblib"],
