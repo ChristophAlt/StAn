@@ -1,0 +1,8 @@
+2740	"The<e1>staff</e1> in the <e2>shop</e2> are all left-handed themselves and are happy to demonstrate products, explain why they are left-handed and give helpful advice to left-handers of all ages."
+Other
+Comment:
+
+9256	"The delay in bringing the suit to trial is being caused by a terrific <e1>log- jam</e1> of pending <e2>cases</e2>, court aids explained."
+Other
+Comment: Too abstract. Log-jam is a state of things, a deadlock -- not a set.
+

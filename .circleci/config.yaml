@@ -1,0 +1,15 @@
+version: 2
+jobs:
+    build_py3:
+        working_directory: ~/StAn
+        docker:
+            - image: circleci/python:3.6.7
+        steps:
+            - checkout
+            - run: sudo pip install --progress-bar off .
+            - run: python -m pytest -sv tests/
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_py3
