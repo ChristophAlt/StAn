@@ -36,15 +36,17 @@ setup(
     url="https://github.com/ChristophAlt/StAn",
     packages=find_packages(exclude=["*.tests", "*.tests.*",
                                     "tests.*", "tests"]),
+    setup_requires=["pytest-runner"],
     install_requires=["stanfordcorenlp",
+                      "tqdm",
                       "joblib"],
+    tests_require=['pytest'],
     entry_points={
       "console_scripts": [
         "stan=stan.__main__:main",
       ]
     },
     python_requires='>=3.6.0',
-    tests_require=['pytest'],
     classifiers=[
           'Intended Audience :: Science/Research',
           'License :: OSI Approved :: MIT Software License',
