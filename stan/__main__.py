@@ -18,11 +18,11 @@ parser.add_argument(
     help="path to store the converted dataset",
 )
 parser.add_argument(
-    "--dataset",
+    "--input-format",
     required=True,
     type=str,
     choices=["semeval2010task8"],
-    help="name of the dataset",
+    help="format of the input dataset",
 )
 parser.add_argument(
     "--corenlp",
@@ -35,7 +35,7 @@ parser.add_argument(
     type=str,
     default="json",
     choices=["json", "jsonl", "tacred"],
-    help="name of the dataset",
+    help="format the annotated dataset is stored",
 )
 parser.add_argument(
     "--validation-size",
@@ -81,7 +81,7 @@ def main():
         input_dir=args.input_dir,
         output_dir=args.output_dir,
         corenlp=args.corenlp,
-        dataset=args.dataset,
+        dataset=args.input_format,
         output_format=args.output_format,
         shuffle=args.shuffle,
         validation_size=args.validation_size,

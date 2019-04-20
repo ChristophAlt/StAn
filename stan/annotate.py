@@ -4,8 +4,8 @@ import os
 import random
 import logging
 
-from stan.dataset_readers import Instance
-from stan.dataset_readers.semeval2010_task8 import SemEval2010Task8DatasetReader
+from stan.dataset_readers import (
+    Instance, SemEval2010Task8DatasetReader, JsonDatasetReader, JsonlDatasetReader)
 from stan.dataset_writers import DatasetWriter, TacredDatasetWriter
 from stan.annotators.corenlp import CoreNlpAnnotator
 from stan.dataset_annotators.semeval2010_task8 import Semeval2010Task8Annotator
@@ -44,6 +44,8 @@ def annotate(
 
     dataset_reader = {
         "semeval2010task8": SemEval2010Task8DatasetReader,
+        "json": JsonDatasetReader,
+        "jsonl": JsonlDatasetReader,
     }[dataset]()
 
     dataset_writer = {
