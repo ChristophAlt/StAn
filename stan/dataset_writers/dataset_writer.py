@@ -1,27 +1,30 @@
 from typing import List, Dict, Any
 
 import json
-from stan.dataset_readers import Instance
+
+from stan.annotators import AnnotatedInstance
 
 
 class DatasetWriter:
     SUPPORTED_FORMATS = ["json", "jsonl"]
 
-    def __init__(self, format: str) -> None:
-        if format.lower() not in self.SUPPORTED_FORMATS:
-            raise ValueError(f"Format '{format}' not supported.")
-        self.format = format.lower()
+    def __init__(self, fmt: str) -> None:
+        if fmt.lower() not in self.SUPPORTED_FORMATS:
+            raise ValueError(f"Format '{fmt}' not supported.")
+        self.format = fmt.lower()
 
-    def _convert_instances(self, instances: List[Instance]) -> List[Dict[str, Any]]:
+    def _convert_instances(
+            self, instances: List[AnnotatedInstance]) -> List[Dict[str, Any]]:
         converted_instances = []
         for instance in instances:
             converted_instance = dict(tokens=instance.tokens)
             converted_instance.update(instance.annotations)
-            converted_instance.update(instance.metadata)
+            if instance.metadata:
+                converted_instance.update(instance.metadata)
             converted_instances.append(converted_instance)
         return converted_instances
 
-    def write(self, path: str, instances: List[Instance]) -> None:
+    def write(self, path: str, instances: List[AnnotatedInstance]) -> None:
         converted_instances = self._convert_instances(instances)
 
         with open(path, "w") as out_f:

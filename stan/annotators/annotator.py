@@ -10,9 +10,8 @@ class AnnotatedInstance:
     def __init__(
             self,
             tokens: List[str],
-            annotations: Optional[Dict[str, Any]] = None,
-            metadata: Optional[Dict[str, Any]] = None,
-            ) -> None:
+            annotations: Dict[str, Any],
+            metadata: Optional[Dict[str, Any]] = None) -> None:
         self.tokens = tokens
         self.annotations = annotations
         self.metadata = metadata

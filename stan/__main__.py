@@ -4,7 +4,7 @@ import argparse
 from stan.annotate import annotate
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()  # pylint: disable=invalid-name
 parser.add_argument(
     "--input-dir",
     required=True,

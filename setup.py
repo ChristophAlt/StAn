@@ -39,7 +39,7 @@ setup(
     install_requires=["stanfordcorenlp",
                       "tqdm",
                       "joblib"],
-    tests_require=["pytest"],
+    tests_require=["pytest", "mypy", "pylint"],
     entry_points={
       "console_scripts": [
         "stan=stan.__main__:main",

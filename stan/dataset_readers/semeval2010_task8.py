@@ -1,16 +1,19 @@
-from typing import List, Tuple
+from typing import List
 
 import re
+
 from stan.dataset_readers import DatasetReader, Instance
 from stan.dataset_readers.utils import remove_argument_markers
 
 
 class SemEval2010Task8DatasetReader(DatasetReader):
 
-    def _to_instance(self, raw: Tuple[str, str]) -> Instance:
-        id_, raw_text = raw[0].split("\t")
+    def _to_instance(self, raw: List[str]) -> Instance:
+        assert len(raw) == 3
+
+        raw_id, raw_text = raw[0].split("\t")
         label = raw[1]
-        id_ = int(id_)
+        id_ = int(raw_id)
         raw_text = raw_text.strip('"')
 
         # Some special cases (e.g. missing spaces before entity marker)
@@ -38,9 +41,9 @@ class SemEval2010Task8DatasetReader(DatasetReader):
     def read(self, path: str) -> List[Instance]:
         instances = []
 
-        with open(path, "r") as f:
-            raw = []
-            for line in f:
+        with open(path, "r") as input_file:
+            raw = []  # type: List[str]
+            for line in input_file:
                 line = line.strip()
 
                 if not line:

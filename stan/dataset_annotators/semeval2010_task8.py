@@ -1,6 +1,7 @@
 from typing import List
 
 import logging
+
 from stan.dataset_readers import Instance
 from stan.annotators import Annotator, AnnotatedInstance
 from stan.dataset_readers.utils import (
@@ -19,6 +20,8 @@ class Semeval2010Task8Annotator(Annotator):
 
     @staticmethod
     def _add_annotations(instance: AnnotatedInstance) -> AnnotatedInstance:
+        assert instance.metadata is not None
+
         raw_text = instance.metadata.pop("raw_text")
         label = instance.metadata["label"]
 
@@ -28,8 +31,14 @@ class Semeval2010Task8Annotator(Annotator):
         subj_spans = argument_spans_from_tokens(subj_arg, instance.tokens)
         obj_spans = argument_spans_from_tokens(obj_arg, instance.tokens)
 
-        subj_start, subj_end = use_closest_span(subj_loc, subj_spans)
-        obj_start, obj_end = use_closest_span(obj_loc, obj_spans)
+        subj_span = use_closest_span(subj_loc, subj_spans)
+        obj_span = use_closest_span(obj_loc, obj_spans)
+
+        assert subj_span is not None
+        assert obj_span is not None
+
+        subj_start, subj_end = subj_span
+        obj_start, obj_end = obj_span
 
         if len(subj_spans) > 1:
             id_ = instance.metadata["id"]
@@ -37,7 +46,7 @@ class Semeval2010Task8Annotator(Annotator):
                 f"[{id_}] Multiple spans '{subj_spans}' for subject '{subj_arg}'."
                 + f"Using '({subj_start}, {subj_end})'"
             )
-            logger.debug(f"Raw text: {raw_text}")
+            logger.debug("Raw text: %s", raw_text)
 
         if len(obj_spans) > 1:
             id_ = instance.metadata["id"]
@@ -45,7 +54,7 @@ class Semeval2010Task8Annotator(Annotator):
                 f"[{id_}] Multiple spans '{obj_spans}' for object '{obj_arg}'."
                 + f"Using '({obj_start}, {obj_end})'"
             )
-            logger.debug(f"Raw text: {raw_text}")
+            logger.debug("Raw text: %s", raw_text)
 
         annotations = instance.annotations
         annotations["subject_type"] = subj_type
