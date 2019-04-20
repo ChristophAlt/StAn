@@ -20,7 +20,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install --progress-bar off .
+            pip install --progress-bar off pytest .
 
       - save_cache:
           paths:
@@ -31,7 +31,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python -m pytest -sv tests/
+            python -m pytest -v tests/
 
       - store_artifacts:
           path: test-reports

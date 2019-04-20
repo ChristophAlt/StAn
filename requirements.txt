@@ -1,6 +1,7 @@
 # Project dependencies
 stanfordcorenlp
 joblib
+tqdm
 
 # Testing
 pytest

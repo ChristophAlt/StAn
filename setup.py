@@ -24,7 +24,7 @@ from io import open
 from setuptools import find_packages, setup
 
 setup(
-    name="pytorch_pretrained_bert",
+    name="stan",
     version="0.0.1a",
     author="Christoph Alt",
     author_email="christoph@opennlu.org",
@@ -37,18 +37,19 @@ setup(
     packages=find_packages(exclude=["*.tests", "*.tests.*",
                                     "tests.*", "tests"]),
     install_requires=["stanfordcorenlp",
+                      "tqdm",
                       "joblib"],
+    tests_require=["pytest"],
     entry_points={
       "console_scripts": [
         "stan=stan.__main__:main",
       ]
     },
     python_requires='>=3.6.0',
-    tests_require=['pytest'],
     classifiers=[
-          'Intended Audience :: Science/Research',
-          'License :: OSI Approved :: MIT Software License',
-          'Programming Language :: Python :: 3',
-          'Topic :: Scientific/Engineering :: Artificial Intelligence',
+          "Intended Audience :: Science/Research",
+          "License :: OSI Approved :: MIT Software License",
+          "Programming Language :: Python :: 3",
+          "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
 )
