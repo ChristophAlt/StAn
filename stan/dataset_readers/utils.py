@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import re
 
@@ -34,13 +34,14 @@ def argument_types_from_label(label: str) -> Tuple[str, str]:
 
 
 def argument_spans_from_tokens(
-    argument: str, tokens: List[str]
-) -> List[Tuple[int, int]]:
-    def find_sub_list(sl, l):
+        argument: str,
+        tokens: List[str]) -> List[Tuple[int, int]]:
+
+    def find_sub_list(sublst, lst):
         results = []
-        sll = len(sl)
-        for ind in (i for i, e in enumerate(l) if e == sl[0]):
-            if l[ind: ind + sll] == sl:
+        sll = len(sublst)
+        for ind in (i for i, e in enumerate(lst) if e == sublst[0]):
+            if lst[ind: ind + sll] == sublst:
                 results.append((ind, ind + sll - 1))
 
         return results
@@ -53,22 +54,23 @@ def argument_spans_from_tokens(
     return matching_spans
 
 
-def use_closest_span(location: int, spans: List[Tuple[int, int]]) -> Tuple[int, int]:
-    assert len(spans) > 0
+def use_closest_span(
+        location: int, spans: List[Tuple[int, int]]) -> Optional[Tuple[int, int]]:
+    assert spans
 
     if len(spans) == 1:
         return spans[0]
-    else:
-        closest_span = None
-        lowest_dist = float("inf")
-        for span in spans:
-            start, end = span
-            dist = min(abs(location - start), abs(location - end))
-            if dist < lowest_dist:
-                closest_span = span
-                lowest_dist = dist
 
-        return closest_span
+    closest_span = None
+    lowest_dist = float("inf")
+    for span in spans:
+        start, end = span
+        dist = min(abs(location - start), abs(location - end))
+        if dist < lowest_dist:
+            closest_span = span
+            lowest_dist = dist
+
+    return closest_span
 
 
 def remove_argument_markers(text: str) -> str:

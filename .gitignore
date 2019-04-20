@@ -33,6 +33,7 @@ venv
 *.pickle.gz
 *.*~
 Dockerfile~
+*.mypy_cache
 
 # Markers
 *.pid

@@ -2,11 +2,10 @@ from typing import List
 
 import logging
 import json
+
+from stanfordcorenlp import StanfordCoreNLP
 from stan.dataset_readers import Instance
 from stan.annotators import Annotator, AnnotatedInstance
-from stanfordcorenlp import StanfordCoreNLP
-# from joblib import Parallel, delayed
-# from tqdm import tqdm
 
 
 class CoreNlpAnnotator(Annotator):

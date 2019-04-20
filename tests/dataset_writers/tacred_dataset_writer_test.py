@@ -47,7 +47,7 @@ def test_write(monkeypatch, tmpdir):
 
     file = tmpdir.join("output.json")
 
-    writer = TacredDatasetWriter(format="json")
+    writer = TacredDatasetWriter(fmt="json")
     writer.write(file.strpath, annotated_instances)
 
     written_annotations = json.loads(file.read())

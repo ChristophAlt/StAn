@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 
-from stan.dataset_readers import Instance
-from stan.dataset_writers import DatasetWriter
+from stan.annotators import AnnotatedInstance
+from stan.dataset_writers.dataset_writer import DatasetWriter
 
 
 class TacredDatasetWriter(DatasetWriter):
@@ -22,10 +22,8 @@ class TacredDatasetWriter(DatasetWriter):
         "object_end": "obj_end",
     }
 
-    def __init__(self, format: str) -> None:
-        super().__init__(format)
-
-    def _convert_instances(self, instances: List[Instance]) -> Dict[str, Any]:
+    def _convert_instances(
+            self, instances: List[AnnotatedInstance]) -> List[Dict[str, Any]]:
         expected_fields = set(self.FIELD_MAP.values())
 
         mapped_instances = []
