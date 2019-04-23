@@ -81,7 +81,7 @@ def main():
         input_dir=args.input_dir,
         output_dir=args.output_dir,
         corenlp=args.corenlp,
-        dataset=args.input_format,
+        input_format=args.input_format,
         output_format=args.output_format,
         shuffle=args.shuffle,
         validation_size=args.validation_size,

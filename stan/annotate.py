@@ -13,13 +13,28 @@ from stan.dataset_annotators.semeval2010_task8 import Semeval2010Task8Annotator
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-def split_files_for_dataset(dataset: str, path: str) -> Tuple[str, Optional[str], str]:
-    if dataset == "semeval2010task8":
-        train_file = os.path.join(
-            path, "SemEval2010_task8_training", "TRAIN_FILE.TXT")
-        val_file = None
-        test_file = os.path.join(
-            path, "SemEval2010_task8_testing_keys", "TEST_FILE_FULL.TXT")
+def _split_files_for_format(
+        fmt: str, path: str,
+        train_filename: Optional[str] = None,
+        val_filename: Optional[str] = None,
+        test_filename: Optional[str] = None) -> Tuple[str, Optional[str], str]:
+
+    if fmt == "semeval2010task8":
+        train_filename = "SemEval2010_task8_training/TRAIN_FILE.TXT"
+        test_filename = "SemEval2010_task8_testing_keys/TEST_FILE_FULL.TXT"
+        val_filename = None
+    else:
+        train_filename = train_filename or f"train.{fmt}"
+        val_filename = val_filename or f"val.{fmt}"
+        test_filename = train_filename or f"test.{fmt}"
+
+    train_file = os.path.join(path, train_filename)
+    test_file = os.path.join(path, test_filename)
+    if val_filename:
+        val_file_path = os.path.join(path, val_filename)
+        # in case no validation file exists
+        if not os.path.isfile(val_file_path):
+            val_file = None
 
     return train_file, val_file, test_file
 
@@ -27,7 +42,7 @@ def split_files_for_dataset(dataset: str, path: str) -> Tuple[str, Optional[str]
 def annotate(
         input_dir: str,
         output_dir: str,
-        dataset: str,
+        input_format: str,
         corenlp: str,
         output_format: str,
         shuffle: bool,
@@ -40,13 +55,13 @@ def annotate(
 
     os.makedirs(output_dir, exist_ok=True)
 
-    train_file, val_file, test_file = split_files_for_dataset(dataset, input_dir)
+    train_file, val_file, test_file = _split_files_for_format(input_format, input_dir)
 
     dataset_reader = {
         "semeval2010task8": SemEval2010Task8DatasetReader,
         "json": JsonDatasetReader,
         "jsonl": JsonlDatasetReader,
-    }[dataset]()
+    }[input_format]()
 
     dataset_writer = {
         "tacred": TacredDatasetWriter(fmt="json"),
@@ -74,7 +89,7 @@ def annotate(
 
     annotator = {
         "semeval2010task8": Semeval2010Task8Annotator,
-    }[dataset](base_annotator)
+    }[input_format](base_annotator)
 
     try:
         logger.info("Annotate train instances:")
@@ -89,9 +104,15 @@ def annotate(
     finally:
         base_annotator.cleanup()
 
+    file_extension = {
+        "tacred": "json",
+        "json": "json",
+        "jsonl": "jsonl"
+    }[output_format]
+
     for filename, split_instances in zip(
-            ["train.json", "val.json", "test.json"],
+            ["train", "val", "test"],
             [annot_train_instances, annot_val_instances, annot_test_instances]):
         if split_instances is not None:
-            output_file = os.path.join(output_dir, filename)
+            output_file = os.path.join(output_dir, f"{filename}.{file_extension}")
             dataset_writer.write(output_file, split_instances)

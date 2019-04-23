@@ -1,7 +1,7 @@
+import pytest
 import os
 import logging
 import json
-import pytest
 import stanfordcorenlp
 
 from tests import FIXTURES_ROOT
