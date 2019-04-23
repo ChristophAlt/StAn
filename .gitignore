@@ -48,3 +48,6 @@ Dockerfile~
 
 # VS Code
 .vscode
+
+# Tests
+.coverage*

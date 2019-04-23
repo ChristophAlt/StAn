@@ -1,0 +1,11 @@
+[
+    {
+        "text": "This is the first test text.",
+        "label": "label1",
+        "another_field": "value"
+    },
+    {
+        "text": "And this is the second test text!",
+        "label": "label2"
+    }
+]
