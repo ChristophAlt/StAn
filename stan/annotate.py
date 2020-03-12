@@ -5,10 +5,10 @@ import random
 import logging
 
 from stan.dataset_readers import (
-    Instance, SemEval2010Task8DatasetReader, JsonDatasetReader, JsonlDatasetReader)
+    Instance, SemEval2010Task8DatasetReader, JsonDatasetReader, JsonlDatasetReader, PlassCorpusDatasetReader)
 from stan.dataset_writers import DatasetWriter, TacredDatasetWriter
 from stan.annotators.corenlp import CoreNlpAnnotator
-from stan.dataset_annotators.semeval2010_task8 import Semeval2010Task8Annotator
+from stan.dataset_annotators import Semeval2010Task8Annotator, PlassCorpusAnnotator
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -23,18 +23,21 @@ def _split_files_for_format(
         train_filename = "SemEval2010_task8_training/TRAIN_FILE.TXT"
         test_filename = "SemEval2010_task8_testing_keys/TEST_FILE_FULL.TXT"
         val_filename = None
+    elif fmt == "plass_corpus":
+        train_filename = train_filename or "train.jsonl"
+        val_filename = val_filename or "dev.jsonl"
+        test_filename = test_filename or "test.jsonl"
     else:
         train_filename = train_filename or f"train.{fmt}"
         val_filename = val_filename or f"val.{fmt}"
-        test_filename = train_filename or f"test.{fmt}"
+        test_filename = test_filename or f"test.{fmt}"
 
     train_file = os.path.join(path, train_filename)
     test_file = os.path.join(path, test_filename)
     if val_filename:
         val_file_path = os.path.join(path, val_filename)
         # in case no validation file exists
-        if not os.path.isfile(val_file_path):
-            val_file = None
+        val_file = val_file_path if os.path.isfile(val_file_path) else None
 
     return train_file, val_file, test_file
 
@@ -59,6 +62,7 @@ def annotate(
 
     dataset_reader = {
         "semeval2010task8": SemEval2010Task8DatasetReader,
+        "plass_corpus": PlassCorpusDatasetReader,
         "json": JsonDatasetReader,
         "jsonl": JsonlDatasetReader,
     }[input_format]()
@@ -89,6 +93,7 @@ def annotate(
 
     annotator = {
         "semeval2010task8": Semeval2010Task8Annotator,
+        "plass_corpus": PlassCorpusAnnotator,
     }[input_format](base_annotator)
 
     try:

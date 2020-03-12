@@ -21,7 +21,7 @@ parser.add_argument(
     "--input-format",
     required=True,
     type=str,
-    choices=["semeval2010task8"],
+    choices=["semeval2010task8", "plass_corpus"],
     help="format of the input dataset",
 )
 parser.add_argument(

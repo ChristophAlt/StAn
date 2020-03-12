@@ -1,0 +1,2 @@
+from stan.dataset_annotators.plass_corpus import PlassCorpusAnnotator
+from stan.dataset_annotators.semeval2010_task8 import Semeval2010Task8Annotator
