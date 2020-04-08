@@ -34,6 +34,7 @@ def _split_files_for_format(
 
     train_file = os.path.join(path, train_filename)
     test_file = os.path.join(path, test_filename)
+    val_file = None
     if val_filename:
         val_file_path = os.path.join(path, val_filename)
         # in case no validation file exists
