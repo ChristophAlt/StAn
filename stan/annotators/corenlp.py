@@ -21,8 +21,8 @@ class CoreNlpAnnotator(Annotator):
             pipelineLanguage="en",
             outputFormat="json",
         )
-        props["tokenize.whitespace"] = True
-        props["ssplit.eolonly"] = True
+        # props["tokenize.whitespace"] = True
+        # props["ssplit.eolonly"] = True
         corenlp_result = json.loads(
             self.corenlp.annotate(instance.text, properties=props))
 
